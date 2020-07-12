@@ -1,0 +1,48 @@
+import json
+
+
+class AccountService:
+
+    def __init__(self, session, api_url):
+        self.session = session
+        self.api_url = api_url
+
+    def get_all_balances(self, without_account=False):
+        """
+        4.1.1. Fetch balances from all accounts.
+
+        :param without_account: Don't include account object in response
+        :return: Response object
+        """
+        url = '{0}/banking/clients/user/v2/accounts/balances'.format(self.api_url)
+        params = {'without-attr': 'account'} if without_account else None
+        response = self.session.get(url, params=params).json()
+        return response
+
+    def get_balance(self, account_uuid):
+        """
+        4.1.2. Fetch balance for a specific account.
+
+        :param account_uuid: Account-ID
+        :return: Response object
+        """
+        url = '{0}/banking/v2/accounts/{1}/balances'.format(self.api_url, account_uuid)
+        response = self.session.get(url).json()
+        return response
+
+    def get_account_transactions(self, account_uuid, with_account=False, transaction_state='BOTH'):
+        """
+        4.1.3. Fetch transactions for a specific account.
+
+        :param account_uuid:  Account-ID
+        :param with_account: Include account information in the response. Defaults to False
+        :param transaction_state: 'BOOKED' or 'NOTBOOKED'. Defaults to 'BOTH'
+        :return: Response object
+        """
+        url = '{0}/banking/v2/accounts/{1}/transactions'.format(self.api_url, account_uuid)
+        params = {'transactionState': transaction_state}
+        if with_account:
+            params['with-attr'] = 'account'
+
+        response = self.session.get(url).json()
+        return response
