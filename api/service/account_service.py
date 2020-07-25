@@ -1,6 +1,3 @@
-import json
-
-
 class AccountService:
 
     def __init__(self, session, api_url):

@@ -1,6 +1,3 @@
-import json
-
-
 class DepotService:
 
     def __init__(self, session, api_url):
@@ -17,7 +14,7 @@ class DepotService:
         response = self.session.get(url).json()
         return response
 
-    def get_depot_positions(self, depot_id, with_depot=True, with_positions=True, with_instrument=False):
+    def get_depot_positions(self, depot_id, with_depot=True, with_positions=True, with_instrument=False, instrument_id=None):
         """
         5.1.2. Fetch information for a specific depot.
 
@@ -26,6 +23,7 @@ class DepotService:
         :param with_positions: Include positions in reponse. Defaults to True.
         :param with_instrument: Include instrument information for positions, ignored if with_positions is False.
             Defaults to False.
+        :param instrument_id: Optional Instrument ID.
         :return: Response object
         """
         url = '{0}/brokerage/v3/depots/{1}/positions'.format(self.api_url, depot_id)
@@ -39,6 +37,9 @@ class DepotService:
 
         if with_instrument and with_positions:
             params['with_attr'] = 'instrument'
+
+        if instrument_id:
+            params['instrumentId'] = instrument_id
 
         response = self.session.get(url, params=params).json()
         return response
