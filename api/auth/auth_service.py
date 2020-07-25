@@ -1,20 +1,26 @@
-import yaml
 import json
+
+import yaml
 
 from api.auth.comdirect_auth import ComdirectAuth
 
 
 class AuthService:
 
-    def __init__(self, session, api_url, oauth_url):
+    def __init__(self, credentials, session, api_url, oauth_url):
         self.api_url = api_url
         self.oauth_url = oauth_url
         self.session = session
         self.auth = None
         self.session_identifier = None
         self.challenge_id = None
-        with open("E:/k/comd.yml", 'r') as stream:
-            self.credentials = yaml.safe_load(stream)
+        if type(credentials) is dict:
+            self.credentials = credentials
+        elif type(credentials) is str:
+            with open(credentials, 'r') as stream:
+                self.credentials = yaml.safe_load(stream)
+        else:
+            raise AuthenticationException('credentials are invalid')
 
     def fetch_tan(self, tan_type=None):
         access_token, refresh_token = self.__oauth_resource_owner_password_credentials_flow()
