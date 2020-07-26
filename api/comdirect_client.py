@@ -1,10 +1,10 @@
 import requests
 
+from api.auth.auth_service import AuthService
 from api.service.account_service import AccountService
 from api.service.depot_service import DepotService
 from api.service.document_service import DocumentService
 from api.service.report_service import ReportService
-from api.auth.auth_service import AuthService
 
 
 class ComdirectClient:
@@ -24,8 +24,8 @@ class ComdirectClient:
         self.document_service = DocumentService(self.session, self.api_url)
         self.report_service = ReportService(self.session, self.api_url)
 
-    def fetch_tan(self, tan_type=None):
-        return self.auth_service.fetch_tan(tan_type)
+    def fetch_tan(self, zugangsnummer, pin, tan_type=None):
+        return self.auth_service.fetch_tan(zugangsnummer, pin, tan_type)
 
     def activate_session(self, tan=None):
         self.auth_service.activate_session(tan)
