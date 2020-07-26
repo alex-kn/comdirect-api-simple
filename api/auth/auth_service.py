@@ -1,29 +1,22 @@
 import json
 
-import yaml
-
 from api.auth.comdirect_auth import ComdirectAuth
 
 
 class AuthService:
 
-    def __init__(self, credentials, session, api_url, oauth_url):
+    def __init__(self, client_id, client_secret, session, api_url, oauth_url):
+        self.client_id = client_id
+        self.client_secret = client_secret
         self.api_url = api_url
         self.oauth_url = oauth_url
         self.session = session
         self.auth = None
         self.session_identifier = None
         self.challenge_id = None
-        if type(credentials) is dict:
-            self.credentials = credentials
-        elif type(credentials) is str:
-            with open(credentials, 'r') as stream:
-                self.credentials = yaml.safe_load(stream)
-        else:
-            raise AuthenticationException('credentials are invalid')
 
-    def fetch_tan(self, tan_type=None):
-        access_token, refresh_token = self.__oauth_resource_owner_password_credentials_flow()
+    def fetch_tan(self, zugangsnummer, pin, tan_type=None):
+        access_token, refresh_token = self.__oauth_resource_owner_password_credentials_flow(zugangsnummer, pin)
         self.auth = ComdirectAuth(access_token, refresh_token)
         self.session.auth = self.auth
 
@@ -39,8 +32,8 @@ class AuthService:
     def refresh_token(self):
         url = '{0}/oauth/token'.format(self.oauth_url)
         payload = {
-            "client_id": self.credentials['client_id'],
-            "client_secret": self.credentials['client_secret'],
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
             "grant_type": 'refresh_token',
             "refresh_token": self.auth.refresh_token,
         }
@@ -66,14 +59,14 @@ class AuthService:
         else:
             raise AuthenticationException(response.headers['x-http-response-info'])
 
-    def __oauth_resource_owner_password_credentials_flow(self):
+    def __oauth_resource_owner_password_credentials_flow(self, zugangsnummer, pin):
         url = '{0}/oauth/token'.format(self.oauth_url)
         payload = {
-            "client_id": self.credentials['client_id'],
-            "client_secret": self.credentials['client_secret'],
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
             "grant_type": 'password',
-            "username": self.credentials['zugangsnummer'],
-            "password": self.credentials['pin'],
+            "username": str(zugangsnummer),
+            "password": str(pin),
         }
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -136,8 +129,8 @@ class AuthService:
         url = "{0}/oauth/token".format(self.oauth_url)
 
         payload = {
-            "client_id": self.credentials['client_id'],
-            "client_secret": self.credentials['client_secret'],
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
             "grant_type": 'cd_secondary',
             "token": self.auth.access_token,
         }
