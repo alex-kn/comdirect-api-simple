@@ -9,7 +9,7 @@ from api.service.report_service import ReportService
 
 class ComdirectClient:
 
-    def __init__(self):
+    def __init__(self, client_id, client_secret):
         self.api_url = 'https://api.comdirect.de/api'
         self.oauth_url = 'https://api.comdirect.de'
         self.session = requests.Session()
@@ -18,7 +18,7 @@ class ComdirectClient:
             'Content-Type': 'application/json',
         })
 
-        self.auth_service = AuthService(self.session, self.api_url, self.oauth_url)
+        self.auth_service = AuthService(client_id, client_secret, self.session, self.api_url, self.oauth_url)
         self.account_service = AccountService(self.session, self.api_url)
         self.depot_service = DepotService(self.session, self.api_url)
         self.document_service = DocumentService(self.session, self.api_url)
