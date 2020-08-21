@@ -28,6 +28,6 @@ class DocumentService:
         :return: Document and the content type of the document
         """
         url = '{0}/messages/v2/documents/{1}'.format(self.api_url, document_id)
-        response = self.session.get(url)
+        response = self.session.get(url, headers={'Accept': 'application/pdf'})
         content_type = response.headers['content-type']
         return response.content, content_type
