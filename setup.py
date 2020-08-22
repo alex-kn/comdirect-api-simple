@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="comdirect-api-simple",
-    version="0.0.3",
+    version="0.0.5",
     author="Alexander Knittel",
     author_email="alx.kntl@gmail.com",
     description="A package for read operations for the comdirect API",
@@ -13,6 +13,9 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/alex-kn/comdirect-api-simple",
     packages=setuptools.find_packages(),
+    install_requires=[
+        'requests',
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
