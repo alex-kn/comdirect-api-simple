@@ -47,11 +47,11 @@ You can refresh your token with:
 client.refresh_token()
 ```
 
-The API is now ready for use, for example:
+The the client is now ready for use, for example:
 
 ```python
 balances = client.get_all_balances()
 print(balances['values'])
 ```
 
-More information about the API can be found at https://developer.comdirect.de
+More information about the official API can be found at https://developer.comdirect.de
