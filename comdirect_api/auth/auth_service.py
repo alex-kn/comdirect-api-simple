@@ -1,6 +1,6 @@
 import json
 
-from api.auth.comdirect_auth import ComdirectAuth
+from comdirect_api.auth.comdirect_auth import ComdirectAuth
 
 
 class AuthService:

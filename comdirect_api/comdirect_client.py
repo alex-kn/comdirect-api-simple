@@ -1,10 +1,10 @@
 import requests
 
-from api.auth.auth_service import AuthService
-from api.service.account_service import AccountService
-from api.service.depot_service import DepotService
-from api.service.document_service import DocumentService
-from api.service.report_service import ReportService
+from comdirect_api.auth.auth_service import AuthService
+from comdirect_api.service.account_service import AccountService
+from comdirect_api.service.depot_service import DepotService
+from comdirect_api.service.document_service import DocumentService
+from comdirect_api.service.report_service import ReportService
 
 
 class ComdirectClient:
