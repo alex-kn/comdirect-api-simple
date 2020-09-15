@@ -36,10 +36,10 @@ class AccountService:
         :param transaction_state: 'BOOKED' or 'NOTBOOKED'. Defaults to 'BOTH'
         :return: Response object
         """
-        url = '{0}/banking/v2/accounts/{1}/transactions'.format(self.api_url, account_uuid)
+        url = '{0}/banking/v1/accounts/{1}/transactions'.format(self.api_url, account_uuid)
         params = {'transactionState': transaction_state}
         if with_account:
             params['with-attr'] = 'account'
 
-        response = self.session.get(url).json()
+        response = self.session.get(url, params=params).json()
         return response
