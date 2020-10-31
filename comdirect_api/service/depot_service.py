@@ -58,8 +58,46 @@ class DepotService:
         response = self.session.get(url, params=params).json()
         return response
 
-    def get_depot_transactions(self):
+    def get_depot_transactions(self, depot_id, with_instrument=False, **kwargs):
         """
-        5.1.4. NOT YET IMPLEMENTED
+        5.1.4. Fetch depot transactions, filter parameters can be applied via kwargs
+        
+        :param depot_id: Depot-ID
+        :param with_instrument: Include instrument information. Defaults to False.    
+        :param wkn: filter by WKN
+        :param isin: filter by ISIN
+        :param instrument_id: filter by instrumentId
+        :param max_booking_date: filter by booking date, Format "JJJJ-MM-TT"
+        :param transaction_direction: filter by transactionDirection: {"IN", "OUT"}
+        :param transaction_type: filter by transactionType: {"BUY", "SELL", "TRANSFER_IN", "TRANSFER_OUT"}
+        :param booking_status: filter by  bookingStatus: {"BOOKED", "NOTBOOKED", "BOTH"}
+        :param min_transaction_value: filter by min-transactionValue
+        :param max_transaction_value: filter by max-transactionValue
+        :return: Response object
         """
-        raise NotImplementedError()
+        kwargs_mapping = {
+            "wkn" : "WKN",
+            "isin" : "ISIN",
+            "instrument_id" : "instrumentId",
+            "max_booking_date" : "max-bookingDate",
+            "transaction_direction" : "transactionDirection",
+            "transaction_type" : "transactionType",
+            "booking_status" : "bookingStatus",
+            "min_transaction_value" : "min-transactionValue",
+            "max_transaction_value" : "max-transactionValue"
+        }
+        
+        url = '{0}/brokerage/v3/depots/{1}/transactions'.format(self.api_url, depot_id)
+        params = {'without-attr': 'instrument'} if not with_instrument else {}
+        
+        for arg, val in kwargs.items():
+            api_arg = kwargs_mapping.get(arg)
+            if api_arg is None:
+                raise ValueError('Keyword argument {} is invalid'.format(arg))
+            else:
+                params[api_arg] = val
+                
+        print(params)
+            
+        response = self.session.get(url, params=params).json()
+        return response

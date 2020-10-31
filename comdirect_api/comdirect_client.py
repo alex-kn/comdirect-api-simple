@@ -97,11 +97,24 @@ class ComdirectClient:
         """
         return self.depot_service.get_position(depot_id, position_id, with_instrument)
 
-    def get_depot_transactions(self):
+    def get_depot_transactions(self, depot_id, with_instrument=False, **kwargs):
         """
-        5.1.4. NOT YET IMPLEMENTED
+        5.1.4. Fetch depot transactions, filter parameters can be applied via kwargs
+        
+        :param depot_id: Depot-ID
+        :param with_instrument: Include instrument information. Defaults to False.    
+        :param wkn: filter by WKN
+        :param isin: filter by ISIN
+        :param instrument_id: filter by instrumentId
+        :param max_booking_date: filter by booking date, Format "JJJJ-MM-TT"
+        :param transaction_direction: filter by transactionDirection: {"IN", "OUT"}
+        :param transaction_type: filter by transactionType: {"BUY", "SELL", "TRANSFER_IN", "TRANSFER_OUT"}
+        :param booking_status: filter by  bookingStatus: {"BOOKED", "NOTBOOKED", "BOTH"}
+        :param min_transaction_value: filter by min-transactionValue
+        :param max_transaction_value: filter by max-transactionValue
+        :return: Response object
         """
-        return self.depot_service.get_depot_transactions()
+        return self.depot_service.get_depot_transactions(depot_id, with_instrument, **kwargs)
 
     def get_documents(self, first_index=0, count=1000):
         """
