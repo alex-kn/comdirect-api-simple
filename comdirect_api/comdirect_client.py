@@ -145,3 +145,15 @@ class ComdirectClient:
         :return: Response object
         """
         return self.report_service.get_report(product_type)
+
+    def get(self, endpoint, base_url='https://api.comdirect.de/api', **kwargs):
+        """
+        Sends a generic GET-request to a given endpoint with given parameters
+
+        :param endpoint: endpoint without leading slash, e.g. 'banking/clients/clientId/v2/accounts/balances'
+        :param base_url: base url. Defaults to 'https://api.comdirect.de/api'
+        :param kwargs: query parameters
+        :return: Response object
+        """
+        url = '{0}/{1}'.format(base_url, endpoint)
+        return self.session.get(url, params=kwargs).json()
