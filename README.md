@@ -54,4 +54,10 @@ balances = client.get_all_balances()
 print(balances['values'])
 ```
 
+It is also possible to send a GET request to a self defined endpoint, for example:
+
+```python
+client.get('reports/participants/user/v1/allbalances', productType='ACCOUNT')
+```
+
 More information about the official API can be found at https://developer.comdirect.de
