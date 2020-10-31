@@ -103,15 +103,15 @@ class ComdirectClient:
         
         :param depot_id: Depot-ID
         :param with_instrument: Include instrument information. Defaults to False.    
-        :param wkn: filter by WKN
-        :param isin: filter by ISIN
-        :param instrument_id: filter by instrumentId
-        :param max_booking_date: filter by booking date, Format "JJJJ-MM-TT"
-        :param transaction_direction: filter by transactionDirection: {"IN", "OUT"}
-        :param transaction_type: filter by transactionType: {"BUY", "SELL", "TRANSFER_IN", "TRANSFER_OUT"}
-        :param booking_status: filter by  bookingStatus: {"BOOKED", "NOTBOOKED", "BOTH"}
-        :param min_transaction_value: filter by min-transactionValue
-        :param max_transaction_value: filter by max-transactionValue
+        :key wkn: filter by WKN
+        :key isin: filter by ISIN
+        :key instrument_id: filter by instrumentId
+        :key max_booking_date: filter by booking date, Format "JJJJ-MM-TT"
+        :key transaction_direction: filter by transactionDirection: {"IN", "OUT"}
+        :key transaction_type: filter by transactionType: {"BUY", "SELL", "TRANSFER_IN", "TRANSFER_OUT"}
+        :key booking_status: filter by  bookingStatus: {"BOOKED", "NOTBOOKED", "BOTH"}
+        :key min_transaction_value: filter by min-transactionValue
+        :key max_transaction_value: filter by max-transactionValue
         :return: Response object
         """
         return self.depot_service.get_depot_transactions(depot_id, with_instrument, **kwargs)
