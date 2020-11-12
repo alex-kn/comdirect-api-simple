@@ -79,7 +79,7 @@ class ComdirectClient:
 
         :param depot_id: Depot-ID
         :param with_depot: Include depot information in response. Defaults to True.
-        :param with_positions: Include positions in reponse. Defaults to True.
+        :param with_positions: Include positions in response. Defaults to True.
         :param with_instrument: Include instrument information for positions, ignored if with_positions is False.
             Defaults to False.
         :return: Response object
@@ -100,9 +100,9 @@ class ComdirectClient:
     def get_depot_transactions(self, depot_id, with_instrument=False, **kwargs):
         """
         5.1.4. Fetch depot transactions, filter parameters can be applied via kwargs
-        
+
         :param depot_id: Depot-ID
-        :param with_instrument: Include instrument information. Defaults to False.    
+        :param with_instrument: Include instrument information. Defaults to False.
         :key wkn: filter by WKN
         :key isin: filter by ISIN
         :key instrument_id: filter by instrumentId
