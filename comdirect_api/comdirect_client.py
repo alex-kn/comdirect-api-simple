@@ -54,16 +54,17 @@ class ComdirectClient:
         """
         return self.account_service.get_balance(account_uuid)
 
-    def get_account_transactions(self, account_uuid, with_account=False, transaction_state='BOTH'):
+    def get_account_transactions(self, account_uuid,paging_count=20, with_account=False, transaction_state='BOTH'):
         """
         4.1.3. Fetch transactions for a specific account.
 
         :param account_uuid:  Account-ID
+        :param paging_count: Number of transactions
         :param with_account: Include account information in the response. Defaults to False
         :param transaction_state: 'BOOKED' or 'NOTBOOKED'. Defaults to 'BOTH'
         :return: Response object
         """
-        return self.account_service.get_account_transactions(account_uuid, with_account, transaction_state)
+        return self.account_service.get_account_transactions(account_uuid,paging_count, with_account, transaction_state)
 
     def get_all_depots(self):
         """
