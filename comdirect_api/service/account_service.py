@@ -27,20 +27,21 @@ class AccountService:
         response = self.session.get(url).json()
         return response
 
-    def get_account_transactions(self, account_uuid,paging_count=20, with_account=False, transaction_state='BOTH'):
+    def get_account_transactions(self, account_uuid, with_account=False, transaction_state='BOTH', paging_count=20):
         """
         4.1.3. Fetch transactions for a specific account.
 
         :param account_uuid:  Account-ID
-        :paging_count: Number of transactions
         :param with_account: Include account information in the response. Defaults to False
         :param transaction_state: 'BOOKED' or 'NOTBOOKED'. Defaults to 'BOTH'
+        :param paging_count: Number of transactions
         :return: Response object
         """
         url = '{0}/banking/v1/accounts/{1}/transactions'.format(self.api_url, account_uuid)
-        params = {'transactionState': transaction_state,
-                  'paging-count':paging_count
-                  }
+        params = {
+            'transactionState': transaction_state,
+            'paging-count': paging_count
+        }
         if with_account:
             params['with-attr'] = 'account'
 
