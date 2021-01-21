@@ -28,9 +28,10 @@ class AccountService:
         return response
 
     def get_account_transactions(self, account_uuid, with_account=False, transaction_state='BOTH', paging_count=20,
-                                 paging_first=0):
+                                 paging_first=0, min_booking_date=None, max_booking_date=None):
         """
-        4.1.3. Fetch transactions for a specific account.
+        4.1.3. Fetch transactions for a specific account. Not setting a min_booking_date currently limits the result to
+        the last 180 days.
 
         :param account_uuid:  Account-ID
         :param with_account: Include account information in the response. Defaults to False
@@ -38,6 +39,8 @@ class AccountService:
         :param paging_count: Number of transactions
         :param paging_first: Index of first returned transaction. Only possible for booked transactions
         (transaction_state='BOOKED').
+        :param max_booking_date: max booking date in format YYYY-MM-DD
+        :param min_booking_date: min booking date in format YYYY-MM-DD
         :return: Response object
         """
         url = '{0}/banking/v1/accounts/{1}/transactions'.format(self.api_url, account_uuid)
@@ -45,6 +48,8 @@ class AccountService:
             'transactionState': transaction_state,
             'paging-count': paging_count,
             'paging-first': paging_first,
+            'min-bookingDate': min_booking_date,
+            'max-bookingDate': max_booking_date,
         }
         if with_account:
             params['with-attr'] = 'account'
