@@ -55,9 +55,10 @@ class ComdirectClient:
         return self.account_service.get_balance(account_uuid)
 
     def get_account_transactions(self, account_uuid, with_account=False, transaction_state='BOTH', paging_count=20,
-                                 paging_first=0):
+                                 paging_first=0, min_booking_date=None, max_booking_date=None):
         """
-        4.1.3. Fetch transactions for a specific account.
+        4.1.3. Fetch transactions for a specific account. Not setting a min_booking_date currently limits the result to
+        the last 180 days.
 
         :param account_uuid:  Account-ID
         :param with_account: Include account information in the response. Defaults to False
@@ -65,10 +66,13 @@ class ComdirectClient:
         :param paging_count: Number of transactions
         :param paging_first: Index of first returned transaction. Only possible for booked transactions
         (transaction_state='BOOKED').
+        :param max_booking_date: max booking date in format YYYY-MM-DD
+        :param min_booking_date: min booking date in format YYYY-MM-DD
         :return: Response object
         """
         return self.account_service.get_account_transactions(account_uuid, with_account, transaction_state,
-                                                             paging_count, paging_first)
+                                                             paging_count, paging_first, min_booking_date,
+                                                             max_booking_date)
 
     def get_all_depots(self):
         """
