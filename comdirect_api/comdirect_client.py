@@ -144,6 +144,12 @@ class ComdirectClient:
         7.1.2 Abruf Orders (Orderbuch)
 
         :param depot_id: Depot-ID
+        :param with_instrument: Include instrument information. Defaults to False.
+        :param with_executions: Include execution information. Defaults to True.
+        :key order_status: filter by orderStatus: {"OPEN ", "EXECUTED", "SETTLED"...}
+        :key venue_id: filter by venueId
+        :key side: filter by side: {"BUY", "SELL"}
+        :key order_type: filter by orderType
         :return: Response object
         """
         return self.order_service.get_all_orders(depot_id, with_instrument, with_executions, **kwargs)
@@ -158,9 +164,25 @@ class ComdirectClient:
         return self.order_service.get_order(order_id)
 
     def set_order_change_validation(self, order_id, changed_order):
+        """
+        7.1.5 Anlage Validation Orderanlage
+
+        :param order_id: Order-ID
+        :param changed_order: Altered order from get_order
+        :return: [challenge_id, challenge] (if challenge not neccessary: None)
+        """
         return self.order_service.set_change_validation(order_id, changed_order)
 
     def set_order_change(self, order_id, changed_order, challenge_id, tan=None):
+        """
+        7.1.11Änderung der Orde
+
+        :param order_id: Order-ID
+        :param changed_order: same altered order as for set_change_validation
+        :param challenge_id: first return value from set_change_validation
+        :param tan: tan if neccessary
+        :return: Response object
+        """
         return self.order_service.set_change(order_id, changed_order, challenge_id, tan)
 
 

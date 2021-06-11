@@ -62,7 +62,13 @@ class OrderService:
             raise OrderException(response.headers['x-http-response-info'])
 
     def set_change_validation(self, order_id, changed_order):
+        """
+        7.1.5 Anlage Validation Orderanlage
 
+        :param order_id: Order-ID
+        :param changed_order: Altered order from get_order
+        :return: [challenge_id, challenge] (if challenge not neccessary: None)
+        """
         url = '{0}/brokerage/v3/orders/{1}/validation'.format(self.api_url, order_id)
         response = self.session.post(url, json=changed_order)
         if response.status_code == 201:
@@ -77,7 +83,15 @@ class OrderService:
             raise OrderException(response.headers['x-http-response-info'])
 
     def set_change(self, order_id, changed_order, challenge_id, tan=None):
+        """
+        7.1.11Änderung der Orde
 
+        :param order_id: Order-ID
+        :param changed_order: same altered order as for set_change_validation
+        :param challenge_id: first return value from set_change_validation
+        :param tan: tan if neccessary
+        :return: Response object
+        """
         url = '{0}/brokerage/v3/orders/{1}'.format(self.api_url, order_id)
         headers = {
             'x-once-authentication-info': json.dumps({
