@@ -23,6 +23,8 @@ class ComdirectClient:
             })
             self.auth_service = AuthService(client_id, client_secret, self.session, self.api_url, self.oauth_url)
         else:
+            if import_session == True:
+                import_session = 'session.pkl'
             with open(import_session, 'rb') as input:
                 self.session = pickle.load(input)
                 self.auth_service = pickle.load(input)

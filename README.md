@@ -75,8 +75,8 @@ You can change an OPEN order as follows:
 orderId='XXYYYAA...'
 order = client.get_order(orderId)
 order['triggerLimit']['value'] = '16.6'
-[challange_id, challange]=client.set_order_change_validation(orderId,order)
-orderChanged=client.set_order_change(orderId,data,challange_id)
+[challenge_id, challenge]=client.set_order_change_validation(orderId, order)
+orderChanged=client.set_order_change(orderId,data, challenge_id)
 ```
 
 To export the session you can use
