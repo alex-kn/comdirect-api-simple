@@ -7,6 +7,8 @@ This package currently only supports read operations, which include:
 * Read balances and transactions
 * Read depot information
 * Read and download Documents
+* Read and update orders
+* Export and import the session
 
 ## Install
 
@@ -58,6 +60,37 @@ It is also possible to send a GET request to a self defined endpoint, for exampl
 
 ```python
 client.get('reports/participants/user/v1/allbalances', productType='ACCOUNT')
+```
+
+List all the complete order-book and filter for OPEN orders:
+
+```python
+data = client.get_all_orders(depotId, order_status='OPEN')
+print(data)
+```
+
+You can change an OPEN order as follows:
+
+```python
+orderId='XXYYYAA...'
+order = client.get_order(orderId)
+order['triggerLimit']['value'] = '16.6'
+[challenge_id, challenge]=client.set_order_change_validation(orderId, order)
+orderChanged=client.set_order_change(orderId,data, challenge_id)
+```
+
+To export the session you can use
+
+```python
+client.activate_session()
+...
+client.session_export()
+```
+
+To import it in another instance call:
+
+```python
+client = ComdirectClient('client_id', 'client_secret','session.pkl')
 ```
 
 More information about the official API can be found at https://developer.comdirect.de
