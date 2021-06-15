@@ -7,6 +7,7 @@ from comdirect_api.service.depot_service import DepotService
 from comdirect_api.service.document_service import DocumentService
 from comdirect_api.service.report_service import ReportService
 from comdirect_api.service.order_service import OrderService
+from comdirect_api.service.instrument_service import InstrumentService
 
 
 class ComdirectClient:
@@ -34,6 +35,7 @@ class ComdirectClient:
         self.document_service = DocumentService(self.session, self.api_url)
         self.report_service = ReportService(self.session, self.api_url)
         self.order_service = OrderService(self.session, self.api_url)
+        self.instrument_service = InstrumentService(self.session, self.api_url)
 
     def session_export(self, filename = 'session.pkl'):
         with open(filename, 'wb') as output:
@@ -140,6 +142,17 @@ class ComdirectClient:
         :return: Response object
         """
         return self.depot_service.get_depot_transactions(depot_id, with_instrument, **kwargs)
+
+    def get_instrument(self, instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True):
+        """
+        6.1.1 Abruf Instrument
+        order_dimensions: es wird das OrderDimension-Objekt befüllt
+        fund_distribution: es   wird das FundDistribution-Objekt befüllt,   wenn  es  sich  bei   dem Wertpapier um einen Fonds handelt
+        derivative_data: es wird das DerivativeData-Objekt befüllt, wenn es sich bei dem Wertpapier um ein Derivat handelt
+        static_data: gibt das StaticData -Objekt nicht zurück
+        :return: Response object
+        """
+        return self.instrument_service.get_instrument(instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True)
         
     def get_order_dimensions(self, **kwargs):
         """
