@@ -140,6 +140,21 @@ class ComdirectClient:
         :return: Response object
         """
         return self.depot_service.get_depot_transactions(depot_id, with_instrument, **kwargs)
+        
+    def get_order_dimensions(self, **kwargs):
+        """
+        7.1.1 Abruf Order Dimensionen
+        :key instrument_id: fiters instrumentId
+        :key wkn: fiters WKN
+        :key isin: fiters ISIN
+        :key mneomic: fiters mneomic
+        :key venue_id: fiters venueId: Mit Hilfe der venueId, welche als UUID eingegeben werden muss, kann auf einen Handelsplatz gefiltert werden
+        :key side: Entspricht der Geschäftsart. Filtermöglichkeiten sind BUY oder SELL
+        :key order_type: fiters orderType: Enspricht dem Ordertypen (bspw. LIMIT, MARKET oder ONE_CANCELS_OTHER)
+        :key type: filters type: Mittels EXCHANGE oder OFF kann unterschieden werden, ob nach einem Börsenplatz (EXCHANGE) oder einem LiveTrading Handelsplatz (OFF) gefiltert werden soll
+        :return: Response object
+        """
+        return self.order_service.get_dimensions(**kwargs)
 
     def get_all_orders(self, depot_id, with_instrument=False, with_executions=True, **kwargs):
         """
