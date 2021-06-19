@@ -7,6 +7,7 @@ from comdirect_api.service.depot_service import DepotService
 from comdirect_api.service.document_service import DocumentService
 from comdirect_api.service.report_service import ReportService
 from comdirect_api.service.order_service import OrderService
+from comdirect_api.service.instrument_service import InstrumentService
 
 
 class ComdirectClient:
@@ -34,6 +35,7 @@ class ComdirectClient:
         self.document_service = DocumentService(self.session, self.api_url)
         self.report_service = ReportService(self.session, self.api_url)
         self.order_service = OrderService(self.session, self.api_url)
+        self.instrument_service = InstrumentService(self.session, self.api_url)
 
     def session_export(self, filename = 'session.pkl'):
         with open(filename, 'wb') as output:
@@ -140,6 +142,32 @@ class ComdirectClient:
         :return: Response object
         """
         return self.depot_service.get_depot_transactions(depot_id, with_instrument, **kwargs)
+
+    def get_instrument(self, instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True):
+        """
+        6.1.1 Abruf Instrument
+        order_dimensions: es wird das OrderDimension-Objekt befüllt
+        fund_distribution: es   wird das FundDistribution-Objekt befüllt,   wenn  es  sich  bei   dem Wertpapier um einen Fonds handelt
+        derivative_data: es wird das DerivativeData-Objekt befüllt, wenn es sich bei dem Wertpapier um ein Derivat handelt
+        static_data: gibt das StaticData -Objekt nicht zurück
+        :return: Response object
+        """
+        return self.instrument_service.get_instrument(instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True)
+        
+    def get_order_dimensions(self, **kwargs):
+        """
+        7.1.1 Abruf Order Dimensionen
+        :key instrument_id: fiters instrumentId
+        :key wkn: fiters WKN
+        :key isin: fiters ISIN
+        :key mneomic: fiters mneomic
+        :key venue_id: fiters venueId: Mit Hilfe der venueId, welche als UUID eingegeben werden muss, kann auf einen Handelsplatz gefiltert werden
+        :key side: Entspricht der Geschäftsart. Filtermöglichkeiten sind BUY oder SELL
+        :key order_type: fiters orderType: Enspricht dem Ordertypen (bspw. LIMIT, MARKET oder ONE_CANCELS_OTHER)
+        :key type: filters type: Mittels EXCHANGE oder OFF kann unterschieden werden, ob nach einem Börsenplatz (EXCHANGE) oder einem LiveTrading Handelsplatz (OFF) gefiltert werden soll
+        :return: Response object
+        """
+        return self.order_service.get_dimensions(**kwargs)
 
     def get_all_orders(self, depot_id, with_instrument=False, with_executions=True, **kwargs):
         """

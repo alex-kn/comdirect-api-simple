@@ -8,6 +8,7 @@ This package currently only supports read operations, which include:
 * Read depot information
 * Read and download Documents
 * Read and update orders
+* Read instrument information
 * Export and import the session
 
 ## Install
