@@ -37,3 +37,7 @@ def test_comdirect_client_import_session(tmp_path):
 
     assert new_client.auth_service.client_id == client_id
     assert new_client.auth_service.client_secret == client_secret
+
+
+def test_fail():
+    assert 1 == 2
