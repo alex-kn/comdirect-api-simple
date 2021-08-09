@@ -1,44 +1,51 @@
+from typing import Any
 import requests
-import json
+
 
 class InstrumentService:
-
-    def __init__(self, session, api_url):
+    def __init__(self, session: requests.Session, api_url: str):
         self.session = session
         self.api_url = api_url
 
-    def get_instrument(self, instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True):
-        """
-        6.1.1 Abruf Instrument
-        order_dimensions: es wird das OrderDimension-Objekt befüllt
-        fund_distribution: es   wird das FundDistribution-Objekt befüllt,   wenn  es  sich  bei   dem Wertpapier um einen Fonds handelt
-        derivative_data: es wird das DerivativeData-Objekt befüllt, wenn es sich bei dem Wertpapier um ein Derivat handelt
-        static_data: gibt das StaticData -Objekt nicht zurück
-        :return: Response object
-        """
+    def get_instrument(
+        self,
+        instrument_id: str,
+        order_dimensions: bool = False,
+        fund_distribution: bool = False,
+        derivative_data: bool = False,
+        static_data: bool = True,
+    ) -> Any:
+        """6.1.1. Request for an intrument's information
 
-        url = '{0}/brokerage/v1/instruments/{1}'.format(self.api_url,instrument_id)
+        Args:
+            instrument_id (str): Instrument identification - can be either the WKN, the ISIN or the symbol.
+            order_dimensions (bool, optional): Include the order dimension object. Defaults to False.
+            fund_distribution (bool, optional): Include the fund distribution object if the instrument is a fund.
+                Defaults to False.
+            derivative_data (bool, optional): include the derivative data object if the instrument is a derivative.
+                Defaults to False.
+            static_data (bool, optional): Include the static data object. Defaults to True.
+
+        Returns:
+            Any: Reponse object
+        """
+        url = "{0}/brokerage/v1/instruments/{1}".format(self.api_url, instrument_id)
         params = {}
 
         if order_dimensions:
-            params['with-attr'] = 'orderDimensions'
+            params["with-attr"] = "orderDimensions"
         if fund_distribution:
-            if 'with-attr' in params.keys():
-                params['with-attr'] = params['with-attr'] + ',fundDistribution“'
+            if "with-attr" in params.keys():
+                params["with-attr"] = params["with-attr"] + ",fundDistribution“"
             else:
-                params['with-attr'] = 'fundDistribution“'
+                params["with-attr"] = "fundDistribution“"
         if derivative_data:
-            if 'with-attr' in params.keys():
-                params['with-attr'] = params['with-attr'] + ',derivativeData“'
+            if "with-attr" in params.keys():
+                params["with-attr"] = params["with-attr"] + ",derivativeData“"
             else:
-                params['with-attr'] = 'derivativeData“'
-        if static_data == False:
-            params['without-attr'] = 'staticData'
+                params["with-attr"] = "derivativeData“"
+        if static_data is False:
+            params["without-attr"] = "staticData"
 
         response = self.session.get(url, params=params).json()
         return response
-
-class InstrumentException(Exception):
-    def __init__(self, response_info):
-        self.response_info = response_info
-        super().__init__(self.response_info)

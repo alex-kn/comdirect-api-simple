@@ -10,7 +10,7 @@ from comdirect_api.service.order_service import OrderService
 from comdirect_api.service.instrument_service import InstrumentService
 
 
-class ComdirectClient(AccountService, DepotService, DocumentService):
+class ComdirectClient(AccountService, DepotService, DocumentService, InstrumentService):
 
     def __init__(self, client_id, client_secret, import_session=False):
         self.api_url = 'https://api.comdirect.de/api'
@@ -30,10 +30,8 @@ class ComdirectClient(AccountService, DepotService, DocumentService):
                 self.session = pickle.load(input)
                 self.auth_service = pickle.load(input)
 
-        self.document_service = DocumentService(self.session, self.api_url)
         self.report_service = ReportService(self.session, self.api_url)
         self.order_service = OrderService(self.session, self.api_url)
-        self.instrument_service = InstrumentService(self.session, self.api_url)
 
     def session_export(self, filename = 'session.pkl'):
         with open(filename, 'wb') as output:
@@ -52,17 +50,6 @@ class ComdirectClient(AccountService, DepotService, DocumentService):
     def revoke_token(self):
         self.auth_service.revoke()
 
-    def get_instrument(self, instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True):
-        """
-        6.1.1 Abruf Instrument
-        order_dimensions: es wird das OrderDimension-Objekt befüllt
-        fund_distribution: es   wird das FundDistribution-Objekt befüllt,   wenn  es  sich  bei   dem Wertpapier um einen Fonds handelt
-        derivative_data: es wird das DerivativeData-Objekt befüllt, wenn es sich bei dem Wertpapier um ein Derivat handelt
-        static_data: gibt das StaticData -Objekt nicht zurück
-        :return: Response object
-        """
-        return self.instrument_service.get_instrument(instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True)
-        
     def get_order_dimensions(self, **kwargs):
         """
         7.1.1 Abruf Order Dimensionen
