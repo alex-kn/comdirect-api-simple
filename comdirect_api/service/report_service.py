@@ -1,21 +1,23 @@
+from typing import Any, List, Union
+
+
 class ReportService:
+    def get_report(self, product_type: Union[str, List[str]] = None) -> Any:
+        """10.1.1. List of all balances for a client's own and connected products.
 
-    def __init__(self, session, api_url):
-        self.session = session
-        self.api_url = api_url
+        Args:
+            product_type (Union[str, List[str]], optional):
+                Filter by one or more of "ACCOUNT", "CARD", "DEPOT", "LOAN", "SAVINGS"
+                (list or comma-separated string). Defaults to None.
 
-    def get_report(self, product_type=None):
+        Returns:
+            Any: Response object
         """
-        10.1.1. Fetch a report for all products
-
-        :param product_type: Filter by one or more of ACCOUNT, CARD, DEPOT, LOAN, SAVINGS
-            (list or comma-separated string)
-            Defaults to None (all product types without filter)
-        :return: Response object
-        """
-        url = '{0}/reports/participants/user/v1/allbalances'.format(self.api_url)
+        url = "{0}/reports/participants/user/v1/allbalances".format(self.api_url)
         params = {
-            'productType': ','.join(product_type) if type(product_type) is list else product_type
+            "productType": ",".join(product_type)
+            if type(product_type) is list
+            else product_type
         }
         response = self.session.get(url, params=params).json()
         return response

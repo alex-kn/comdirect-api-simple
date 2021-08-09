@@ -12,9 +12,15 @@ class ComdirectAuth(AuthBase):
     def __call__(self, request):
         request.headers.update(
             {
-                'Authorization': 'Bearer {0}'.format(self.access_token),
-                'x-http-request-info': str(
-                    {'clientRequestId': {'sessionId': self.session_id, 'requestId': generate_request_id()}}),
+                "Authorization": "Bearer {0}".format(self.access_token),
+                "x-http-request-info": str(
+                    {
+                        "clientRequestId": {
+                            "sessionId": self.session_id,
+                            "requestId": generate_request_id(),
+                        }
+                    }
+                ),
             }
         )
         return request
