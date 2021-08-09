@@ -10,7 +10,7 @@ from comdirect_api.service.order_service import OrderService
 from comdirect_api.service.instrument_service import InstrumentService
 
 
-class ComdirectClient(AccountService):
+class ComdirectClient(AccountService, DepotService):
 
     def __init__(self, client_id, client_secret, import_session=False):
         self.api_url = 'https://api.comdirect.de/api'
@@ -30,7 +30,6 @@ class ComdirectClient(AccountService):
                 self.session = pickle.load(input)
                 self.auth_service = pickle.load(input)
 
-        self.depot_service = DepotService(self.session, self.api_url)
         self.document_service = DocumentService(self.session, self.api_url)
         self.report_service = ReportService(self.session, self.api_url)
         self.order_service = OrderService(self.session, self.api_url)
@@ -52,57 +51,6 @@ class ComdirectClient(AccountService):
 
     def revoke_token(self):
         self.auth_service.revoke()
-
-    def get_all_depots(self):
-        """
-        5.1.2. Fetch information for all depots.
-
-        :return: Response object
-        """
-        return self.depot_service.get_all_depots()
-
-    def get_depot_positions(self, depot_id, with_depot=True, with_positions=True, with_instrument=False):
-        """
-        5.1.2. Fetch information for a specific depot.
-
-        :param depot_id: Depot-ID
-        :param with_depot: Include depot information in response. Defaults to True.
-        :param with_positions: Include positions in response. Defaults to True.
-        :param with_instrument: Include instrument information for positions, ignored if with_positions is False.
-            Defaults to False.
-        :return: Response object
-        """
-        return self.depot_service.get_depot_positions(depot_id, with_depot, with_positions, with_instrument)
-
-    def get_position(self, depot_id, position_id, with_instrument=False):
-        """
-        5.1.3. Fetch a specific position.
-
-        :param depot_id: Depot-ID
-        :param position_id: Position-ID
-        :param with_instrument: Include instrument information. Defaults to False.
-        :return: Response object
-        """
-        return self.depot_service.get_position(depot_id, position_id, with_instrument)
-
-    def get_depot_transactions(self, depot_id, with_instrument=False, **kwargs):
-        """
-        5.1.4. Fetch depot transactions, filter parameters can be applied via kwargs
-
-        :param depot_id: Depot-ID
-        :param with_instrument: Include instrument information. Defaults to False.
-        :key wkn: filter by WKN
-        :key isin: filter by ISIN
-        :key instrument_id: filter by instrumentId
-        :key max_booking_date: filter by booking date, Format "JJJJ-MM-TT"
-        :key transaction_direction: filter by transactionDirection: {"IN", "OUT"}
-        :key transaction_type: filter by transactionType: {"BUY", "SELL", "TRANSFER_IN", "TRANSFER_OUT"}
-        :key booking_status: filter by  bookingStatus: {"BOOKED", "NOTBOOKED", "BOTH"}
-        :key min_transaction_value: filter by min-transactionValue
-        :key max_transaction_value: filter by max-transactionValue
-        :return: Response object
-        """
-        return self.depot_service.get_depot_transactions(depot_id, with_instrument, **kwargs)
 
     def get_instrument(self, instrument_id, order_dimensions=False, fund_distribution=False, derivative_data=False, static_data = True):
         """
