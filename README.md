@@ -2,7 +2,7 @@
 
 This is an unofficial python wrapper for the comdirect API for private consumers (April 2020).
 
-This package currently only supports read operations, which include:
+This package currently supports the following operations:
 
 * Read balances and transactions
 * Read depot information
@@ -10,6 +10,8 @@ This package currently only supports read operations, which include:
 * Read and update orders
 * Read instrument information
 * Export and import the session
+
+Use at your own risk.
 
 ## Install
 
@@ -73,11 +75,11 @@ print(data)
 You can change an OPEN order as follows:
 
 ```python
-orderId='XXYYYAA...'
+orderId = 'XXYYYAA...'
 order = client.get_order(orderId)
 order['triggerLimit']['value'] = '16.6'
-[challenge_id, challenge]=client.set_order_change_validation(orderId, order)
-orderChanged=client.set_order_change(orderId,data, challenge_id)
+[challenge_id, challenge] = client.set_order_change_validation(orderId, order)
+orderChanged=client.set_order_change(orderId, data, challenge_id)
 ```
 
 To export the session you can use
@@ -91,7 +93,7 @@ client.session_export()
 To import it in another instance call:
 
 ```python
-client = ComdirectClient('client_id', 'client_secret','session.pkl')
+client = ComdirectClient('client_id', 'client_secret', import_session=True)
 ```
 
 More information about the official API can be found at https://developer.comdirect.de
