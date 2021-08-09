@@ -1,12 +1,7 @@
 from typing import Any
-import requests
 
 
 class InstrumentService:
-    def __init__(self, session: requests.Session, api_url: str):
-        self.session = session
-        self.api_url = api_url
-
     def get_instrument(
         self,
         instrument_id: str,

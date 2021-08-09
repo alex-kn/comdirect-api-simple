@@ -1,13 +1,7 @@
 from typing import Any, Tuple
 
-from requests import Session
-
 
 class DocumentService:
-    def __init__(self, session: Session, api_url: str):
-        self.session = session
-        self.api_url = api_url
-
     def get_documents(self, first_index: int = 0, count: int = 1000) -> Any:
         """9.1.1. Delivers a list of documents for the customer.
 

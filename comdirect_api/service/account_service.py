@@ -1,12 +1,7 @@
 from typing import Any
-from requests import Session
 
 
 class AccountService:
-    def __init__(self, session: Session, api_url: str):
-        self.session = session
-        self.api_url = api_url
-
     def get_all_balances(self, without_account: bool = False) -> Any:
         """4.1.1. Request for account information, including cash balance and buying power, for all accounts.
 

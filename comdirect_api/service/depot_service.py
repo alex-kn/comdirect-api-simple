@@ -1,13 +1,7 @@
 from typing import Any
 
-from requests import Session
-
 
 class DepotService:
-    def __init__(self, session: Session, api_url: str):
-        self.session = session
-        self.api_url = api_url
-
     def get_all_depots(self) -> Any:
         """5.1.1. Request for a list of the master data for the securities accounts of the registered user
 
