@@ -10,7 +10,7 @@ from comdirect_api.service.order_service import OrderService
 from comdirect_api.service.instrument_service import InstrumentService
 
 
-class ComdirectClient(AccountService, DepotService):
+class ComdirectClient(AccountService, DepotService, DocumentService):
 
     def __init__(self, client_id, client_secret, import_session=False):
         self.api_url = 'https://api.comdirect.de/api'
@@ -124,25 +124,6 @@ class ComdirectClient(AccountService, DepotService):
         """
         return self.order_service.set_change(order_id, changed_order, challenge_id, tan)
 
-
-    def get_documents(self, first_index=0, count=1000):
-        """
-        9.1.1. Fetch all documents in the PostBox
-
-        :param first_index: Index of the first document, starting with 0. Defaults to 0
-        :param count: Number of documents to be fetched. Max 1000. Defaults to 1000.
-        :return: Response object
-        """
-        return self.document_service.get_documents(first_index, count)
-
-    def get_document(self, document_id):
-        """
-        9.1.2. Fetch a specific document. The document will be marked as read when fetched.
-
-        :param document_id: Document-ID
-        :return: Document and the content type of the document
-        """
-        return self.document_service.get_document(document_id)
 
     def get_report(self, product_type=None):
         """

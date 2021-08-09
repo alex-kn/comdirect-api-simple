@@ -1,8 +1,10 @@
 from typing import Any
 
+from requests import Session
+
 
 class DepotService:
-    def __init__(self, session, api_url):
+    def __init__(self, session: Session, api_url: str):
         self.session = session
         self.api_url = api_url
 
