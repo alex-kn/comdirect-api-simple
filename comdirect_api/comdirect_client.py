@@ -10,7 +10,7 @@ from comdirect_api.service.order_service import OrderService
 from comdirect_api.service.instrument_service import InstrumentService
 
 
-class ComdirectClient:
+class ComdirectClient(AccountService):
 
     def __init__(self, client_id, client_secret, import_session=False):
         self.api_url = 'https://api.comdirect.de/api'
@@ -30,7 +30,6 @@ class ComdirectClient:
                 self.session = pickle.load(input)
                 self.auth_service = pickle.load(input)
 
-        self.account_service = AccountService(self.session, self.api_url)
         self.depot_service = DepotService(self.session, self.api_url)
         self.document_service = DocumentService(self.session, self.api_url)
         self.report_service = ReportService(self.session, self.api_url)
@@ -53,44 +52,6 @@ class ComdirectClient:
 
     def revoke_token(self):
         self.auth_service.revoke()
-
-    def get_all_balances(self, without_account=False):
-        """
-        4.1.1. Fetch balances from all accounts.
-
-        :param without_account: Don't include account object in response
-        :return: Response object
-        """
-        return self.account_service.get_all_balances(without_account)
-
-    def get_balance(self, account_uuid):
-        """
-        4.1.2. Fetch balance for a specific account.
-
-        :param account_uuid: Account-ID
-        :return: Response object
-        """
-        return self.account_service.get_balance(account_uuid)
-
-    def get_account_transactions(self, account_uuid, with_account=False, transaction_state='BOTH', paging_count=20,
-                                 paging_first=0, min_booking_date=None, max_booking_date=None):
-        """
-        4.1.3. Fetch transactions for a specific account. Not setting a min_booking_date currently limits the result to
-        the last 180 days.
-
-        :param account_uuid:  Account-ID
-        :param with_account: Include account information in the response. Defaults to False
-        :param transaction_state: 'BOOKED' or 'NOTBOOKED'. Defaults to 'BOTH'
-        :param paging_count: Number of transactions
-        :param paging_first: Index of first returned transaction. Only possible for booked transactions
-        (transaction_state='BOOKED').
-        :param max_booking_date: max booking date in format YYYY-MM-DD
-        :param min_booking_date: min booking date in format YYYY-MM-DD
-        :return: Response object
-        """
-        return self.account_service.get_account_transactions(account_uuid, with_account, transaction_state,
-                                                             paging_count, paging_first, min_booking_date,
-                                                             max_booking_date)
 
     def get_all_depots(self):
         """
